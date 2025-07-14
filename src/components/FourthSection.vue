@@ -107,6 +107,18 @@ const createEntranceAnimation = () => {
   return entranceTimeline
 }
 
+const animateStats = () => {
+  if (statsRef.value) {
+    gsap.to(statsRef.value, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.8,
+      ease: "power2.out"
+    })
+  }
+}
+
 // 主动画函数
 const startAnimation = async () => {
   if (isAnimating.value || hasAnimated.value) return
@@ -223,6 +235,11 @@ const startAnimation = async () => {
         }
       })
     }, 1200) // 1.2秒后准备数据
+    
+    // 1.3秒后开始统计信息动画
+    setTimeout(() => {
+      animateStats()
+    }, 1300)
   }
   
   // 启动进度更新

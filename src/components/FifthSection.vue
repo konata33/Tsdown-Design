@@ -40,7 +40,7 @@ const statsCards = [
     beforeValue: '3.2MB',
     afterValue: '450KB',
     reduction: '86%',
-    icon: '/src/assets/Firth_box.svg',
+    icon: '/Firth_box.svg',
     color: 'orange'
   },
   {
@@ -48,7 +48,7 @@ const statsCards = [
     beforeValue: '24',
     afterValue: '8',
     reduction: '16',
-    icon: '/src/assets/Firth_trash.svg',
+    icon: '/Firth_trash.svg',
     color: 'yellow'
   },
   {
@@ -56,7 +56,7 @@ const statsCards = [
     beforeValue: '2.8s',
     afterValue: '0.3s',
     reduction: '89%',
-    icon: '/src/assets/Firth_speed.svg',
+    icon: '/Firth_speed.svg',
     color: 'blue'
   },
   {
@@ -64,7 +64,7 @@ const statsCards = [
     beforeValue: '156',
     afterValue: '23',
     reduction: '85%',
-    icon: '/src/assets/Firth_dependencies.svg',
+    icon: '/Firth_dependencies.svg',
     color: 'lightblue'
   }
 ]
