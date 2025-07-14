@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/* 导入自定义字体 */
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/Nippo-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 设置全局字体 */
+* {
+  font-family: 'CustomFont', system-ui, -apple-system, sans-serif;
+}
+
+/* 隐藏滚动条 */
+* {
+  /* Firefox */
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  /* Webkit 浏览器 (Chrome, Safari, Edge) */
+  display: none;
+}
+
+/* 确保内容仍然可以滚动 */
+body, html {
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+@theme {
+  --bg-primary: #1b1b1f;
+  --bg-accent: #323238;
+}
+
+/* Tsdown 渐变文字效果 */
+.tsdown-gradient {
+  background: -webkit-linear-gradient(90deg, #1e40af, #60a5fa, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Rolldown 渐变文字效果 */
+.rolldown-gradient {
+  background: -webkit-linear-gradient(90deg, #ff5d13, #f0db4f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 500;
+}
+
+/* 自定义光晕效果 */
+.glow-effect {
+  filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.4)) 
+          drop-shadow(0 0 40px rgba(250, 204, 21, 0.3))
+          drop-shadow(0 0 80px rgba(147, 197, 253, 0.2));
+}
+
+/* 径向渐变背景 */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* 悬停效果增强光晕 */
+.glow-effect:hover {
+  filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.6)) 
+          drop-shadow(0 0 60px rgba(250, 204, 21, 0.4))
+          drop-shadow(0 0 120px rgba(147, 197, 253, 0.3));
+  transition: filter 0.3s ease-in-out;
+}
+

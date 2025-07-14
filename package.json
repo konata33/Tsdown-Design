@@ -1,0 +1,30 @@
+{
+  "name": "tsdown",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@lottiefiles/dotlottie-vue": "^0.7.2",
+    "@tailwindcss/vite": "^4.1.11",
+    "gsap": "^3.13.0",
+    "sass": "^1.89.2",
+    "tailwindcss": "^4.1.11",
+    "vue": "^3.5.17",
+    "vue3-lottie": "^3.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vue/runtime-core": "^3.5.17",
+    "@vue/runtime-dom": "^3.5.17",
+    "@vue/tsconfig": "^0.7.0",
+    "@vue/typescript-plugin": "^3.0.1",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.0",
+    "vue-tsc": "^2.2.10"
+  }
+}
