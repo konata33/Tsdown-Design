@@ -2,19 +2,19 @@
 import { gsap } from 'gsap'
 import { onMounted, onUnmounted, ref } from 'vue'
 
-// 组件根元素引用
+
 const sectionRef = ref<HTMLElement>()
 const dashboardRef = ref<HTMLElement>()
 const progressRingRef = ref<HTMLElement>()
 const statsCardsRef = ref<HTMLElement>()
 
 
-// 动画状态
+
 const hasAnimated = ref(false)
 const isAnimating = ref(false)
 const currentStep = ref(0)
 
-// 仪表盘数据
+
 const dashboardData = ref({
   overallProgress: 0,
   bundleSize: {
@@ -33,7 +33,7 @@ const dashboardData = ref({
   }
 })
 
-// 仪表盘统计卡片数据
+
 const statsCards = [
   {
     title: 'Bundle Size',
@@ -71,53 +71,48 @@ const statsCards = [
 
 
 
-// Intersection Observer
+
 let observer: IntersectionObserver | null = null
 let mainTimeline: gsap.core.Timeline | null = null
 
-// 计算优化后的宽度百分比
+
 const getOptimizedWidth = (card: any) => {
-  // 根据不同卡片计算相对宽度
   switch (card.title) {
     case 'Bundle Size':
-      // 450KB / 3200KB = 14%
       return '14%'
     case 'Files Removed':
-      // 8 / 24 = 33%
       return '33%'
     case 'Load Time':
-      // 0.3s / 2.8s = 11%
       return '11%'
     case 'Dependencies':
-      // 23 / 156 = 15%
       return '15%'
     default:
       return '0%'
   }
 }
 
-// 主动画函数
+
 const runAnimation = async () => {
   if (!dashboardRef.value || !progressRingRef.value || !statsCardsRef.value) return
-  if (isAnimating.value) return // 防止重复播放
+  if (isAnimating.value) return
 
   isAnimating.value = true
 
-  // 创建主时间轴
+
   mainTimeline = gsap.timeline({
     onComplete: () => {
       isAnimating.value = false
     }
   })
 
-  // 获取元素
+
   const progressCircle = progressRingRef.value.querySelector('.progress-circle')
   const progressText = progressRingRef.value.querySelector('.progress-text')
   const cards = statsCardsRef.value.querySelectorAll('.stat-card')
 
   if (!progressCircle || !progressText) return
 
-  // 设置初始状态
+
   gsap.set(dashboardRef.value, {
     opacity: 0,
     scale: 0.8
@@ -132,12 +127,12 @@ const runAnimation = async () => {
 
 
   gsap.set(progressCircle, {
-    strokeDasharray: "0 628" // 2 * π * 100 = 628
+    strokeDasharray: "0 628"
   })
 
-  // 动画序列
+
   mainTimeline
-    // 阶段1：仪表盘整体出现
+
     .to(dashboardRef.value, {
       opacity: 1,
       scale: 1,
@@ -148,13 +143,13 @@ const runAnimation = async () => {
       }
     })
 
-    // 阶段2：中央进度环开始填充
+
     .to(progressCircle, {
-      strokeDasharray: "546 628", // 87% 的总体优化进度
+      strokeDasharray: "546 628",
       duration: 2.5,
       ease: "power2.out",
       onUpdate: function() {
-        // 计算综合优化进度：Bundle Size(86%) + Load Time(89%) + Dependencies(85%) / 3 = 87%
+
         const progress = Math.round(this.progress() * 87)
         dashboardData.value.overallProgress = progress
         if (progressText) {
@@ -163,7 +158,7 @@ const runAnimation = async () => {
       }
     }, "+=0.3")
 
-    // 阶段3：统计卡片依次出现
+
     .to(cards, {
       opacity: 1,
       y: 0,
@@ -181,7 +176,7 @@ const runAnimation = async () => {
 
 
 
-         // 阶段4：最终高亮效果
+
      .to(progressCircle, {
        filter: "drop-shadow(0 0 10px #fbbf24)",
        duration: 0.4,
@@ -190,7 +185,7 @@ const runAnimation = async () => {
      }, "+=0.5")
 }
 
-// 设置Intersection Observer
+
 const setupIntersectionObserver = () => {
   if (!sectionRef.value) return
   
@@ -198,7 +193,7 @@ const setupIntersectionObserver = () => {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !hasAnimated.value && !isAnimating.value) {
-          // 立即标记为已动画，防止重复触发
+  
           hasAnimated.value = true
           setTimeout(() => {
             runAnimation()
@@ -226,7 +221,7 @@ onUnmounted(() => {
   if (mainTimeline) {
     mainTimeline.kill()
   }
-  // 重置动画状态
+  
   isAnimating.value = false
 })
 </script>
@@ -234,19 +229,19 @@ onUnmounted(() => {
 <template>
   <div ref="sectionRef" class="min-h-screen flex flex-col justify-center items-center py-16">
     <div class="w-full max-w-7xl px-8">
-      <!-- 主标题 -->
+
       <div class="text-center mb-16">
         <h2 class="text-6xl font-bold mb-4 text-white">Optimization Dashboard</h2>
         <p class="text-2xl text-gray-400">Tree shaking & source maps included - Overall performance metrics</p>
       </div>
 
-      <!-- 仪表盘主体 -->
+      
       <div ref="dashboardRef" class="relative opacity-0">
-        <!-- 中央圆形进度仪表 -->
+        
         <div class="flex justify-center mb-12">
           <div ref="progressRingRef" class="relative">
             <svg width="280" height="280" viewBox="0 0 280 280" class="transform -rotate-90">
-              <!-- 背景圆环 -->
+
               <circle
                 cx="140"
                 cy="140"
@@ -255,7 +250,7 @@ onUnmounted(() => {
                 stroke-width="8"
                 fill="none"
               />
-              <!-- 进度圆环 -->
+              
               <circle
                 cx="140"
                 cy="140"
@@ -267,7 +262,7 @@ onUnmounted(() => {
                 class="progress-circle"
                 style="stroke-dasharray: 0 628; transition: stroke-dasharray 0.3s ease;"
               />
-                             <!-- 渐变定义 -->
+
                <defs>
                  <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                    <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
@@ -276,7 +271,7 @@ onUnmounted(() => {
                  </linearGradient>
                </defs>
             </svg>
-            <!-- 中央文字 -->
+            
             <div class="absolute inset-0 flex flex-col items-center justify-center">
               <div class="progress-text text-5xl font-bold text-white mb-2">0%</div>
               <div class="text-lg text-gray-400">Overall Optimized</div>
@@ -284,25 +279,25 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- 统计卡片网格 -->
+        
         <div ref="statsCardsRef" class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div 
             v-for="(card, index) in statsCards" 
             :key="index"
             class="stat-card backdrop-blur-xl bg-gradient-to-br from-gray-800/20 via-gray-700/10 to-gray-600/15 rounded-xl p-6 border border-white/10 shadow-2xl relative overflow-hidden opacity-0"
           >
-            <!-- 玻璃磨砂效果的内层光晕 -->
+            
             <div class="absolute inset-0 rounded-xl bg-gradient-to-br from-white/8 via-gray-400/4 to-white/6 pointer-events-none"></div>
-            <!-- 顶部高光 -->
+            
             <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"></div>
-            <!-- 内容容器 -->
+            
             <div class="relative z-10">
               <div class="flex items-center gap-3 mb-4">
               <img :src="card.icon" class="w-8 h-8 filter drop-shadow-sm" alt="" />
               <h3 class="text-lg font-bold text-white">{{ card.title }}</h3>
             </div>
                          <div class="space-y-3">
-               <!-- 原始值对比条 -->
+               
                <div class="space-y-1">
                  <div class="flex justify-between items-center">
                    <span class="text-xs font-semibold text-gray-300 tracking-wide uppercase">Original</span>
@@ -316,7 +311,7 @@ onUnmounted(() => {
                  </div>
                </div>
                
-               <!-- 优化后对比条 -->
+               
                <div class="space-y-1">
                  <div class="flex justify-between items-center">
                    <span class="text-xs font-semibold text-blue-300 tracking-wide uppercase">Optimized</span>
@@ -330,7 +325,7 @@ onUnmounted(() => {
                  </div>
                </div>
                
-               <!-- 减少百分比 -->
+               
                <div class="text-center pt-4 border-t border-white/10 mt-4">
                  <div class="space-y-1">
                    <div class="text-xs text-gray-400 uppercase tracking-wide">IMPROVED</div>
@@ -349,7 +344,7 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* 仪表盘样式 */
+
 .stat-card {
   transition: all 0.3s ease;
   backdrop-filter: blur(20px);
@@ -365,19 +360,19 @@ onUnmounted(() => {
 
 
 
-/* 进度环发光效果 */
+
 .progress-circle {
   filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
 }
 
 
 
-/* 数字动画 */
+
 .progress-text {
   font-variant-numeric: tabular-nums;
 }
 
-/* 优化后进度条样式 */
+
 .optimized-bar {
   background: linear-gradient(90deg, #2563eb, #3b82f6, #fbbf24, #f97316);
   background-size: 200% 100%;
@@ -405,7 +400,7 @@ onUnmounted(() => {
   animation-delay: 0.5s;
 }
 
-/* 动画关键帧 */
+
 @keyframes shimmer {
   0%, 100% {
     background-position: 0% 50%;
@@ -424,7 +419,7 @@ onUnmounted(() => {
   }
 }
 
-/* 原始进度条样式 */
+
 .original-bar {
   background: linear-gradient(90deg, #6b7280, #9ca3af, #6b7280);
   background-size: 200% 100%;
@@ -443,7 +438,7 @@ onUnmounted(() => {
   }
 }
 
-/* 进度条容器改进 */
+
 .bg-gray-800\/60 {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }

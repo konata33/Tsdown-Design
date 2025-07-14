@@ -107,19 +107,6 @@ const createEntranceAnimation = () => {
   return entranceTimeline
 }
 
-// 底部统计信息动画
-const animateStats = () => {
-  if (statsRef.value) {
-    gsap.to(statsRef.value, {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 0.8,
-      ease: "power2.out"
-    })
-  }
-}
-
 // 主动画函数
 const startAnimation = async () => {
   if (isAnimating.value || hasAnimated.value) return
@@ -247,12 +234,6 @@ const startAnimation = async () => {
     scanAnimation(),
     generateAnimation()
   ])
-  
-  // 在主动画接近完成时就开始底部统计信息的动画
-  const statsAnimation = (async () => {
-    await new Promise(resolve => setTimeout(resolve, 1300)) // 1.3秒后开始
-    animateStats()
-  })()
   
   // 等待主动画完成
   await mainAnimations
